@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-img = cv2.imread("d://gray.jpg")
+img = cv2.imread("gray.jpg")
 canvas = np.zeros((100,100),dtype=np.uint8)
 #canvas=cv2.circle(canvas,(50,50),20,(255,),-1)
 arr1= np.array([[-1/2,1/2]])

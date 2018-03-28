@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 #image = np.zeros((800,600))
-image = cv2.imread('C:png.png')
+image = cv2.imread('png.png')
 fontFace = cv2.FONT_HERSHEY_SIMPLEX
 fontScale = 1.0
 thickness = 2
