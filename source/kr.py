@@ -74,8 +74,18 @@ sobely = cv.Sobel(img,cv.CV_64F,0,1,ksize=1)
 cv.imshow("Img",sobelx)
 cv.imshow("Img2",sobely)
 
-arrimage1 = np.asarray(sobelx)
-arrimage2 = np.asarray(sobely)
+arrimage1 = np.asarray(sobelx,np.int)
+arrimage2 = np.asarray(sobely,np.int)
+
+
+for i in range (arrimage1.__len__()):
+    for j in range (arrimage1[i].__len__()):
+        arrimage1[i,j]=arrimage1[i,j]+128
+        arrimage2[i,j]=arrimage2[i,j]+128
+arrim1=arrimage1.astype(np.uint8)
+arrim2=arrimage2.astype(np.uint8)
+cv.imshow("arrim",arrim1)
+cv.imshow("arri2",arrim2)
 
 newim = np.zeros((800,800),np.uint8)
 finalimage= np.zeros((800,800,3),np.uint8)
