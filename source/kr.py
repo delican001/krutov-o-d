@@ -45,7 +45,7 @@ def draw_triang(img,x,y,color_):
     y2=y+power*6
     triang = np.array([[[x2, y2], [x2, y2+20], [x2+20, y2]]], dtype=np.int32)
     cv.fillPoly(img, triang, colors[color_[1]])
-img = np.zeros((800,800),np.uint8)
+img = np.zeros((800,800),np.int16)
 x=0
 y=0
 for i in range(6):
@@ -62,7 +62,7 @@ for i in range(6):
     y=y+10*2*power
     draw_square(img,x,y,get_colors(i))
 
-cv.imshow("image",img)
+cv.imshow("image",np.uint8(img))
 kernel1 = np.array([[-1/9, -1/9, -1/9],[0,0,0],[1/9,1/9,1/9]])
 map1 = cv.filter2D(img, -1, kernel1)
 
@@ -71,17 +71,16 @@ map2 = cv.filter2D(img, -1, kernel2)
 
 sobelx = cv.Sobel(img,cv.CV_64F,1,0,ksize=1)
 sobely = cv.Sobel(img,cv.CV_64F,0,1,ksize=1)
-cv.imshow("Img",sobelx)
-cv.imshow("Img2",sobely)
+#cv.imshow("Img",sobelx)
+#cv.imshow("Img2",sobely)
 
-arrimage1 = np.asarray(sobelx,np.int)
-arrimage2 = np.asarray(sobely,np.int)
-
+arrimage1 = np.asarray(sobelx,np.int32)
+arrimage2 = np.asarray(sobely,np.int32)
 
 for i in range (arrimage1.__len__()):
     for j in range (arrimage1[i].__len__()):
-        arrimage1[i,j]=arrimage1[i,j]+128
-        arrimage2[i,j]=arrimage2[i,j]+128
+        arrimage1[i,j]=arrimage1[i,j]/2+128
+        arrimage2[i,j]=arrimage2[i,j]/2+128
 arrim1=arrimage1.astype(np.uint8)
 arrim2=arrimage2.astype(np.uint8)
 cv.imshow("arrim",arrim1)
@@ -91,12 +90,17 @@ newim = np.zeros((800,800),np.uint8)
 finalimage= np.zeros((800,800,3),np.uint8)
 for i in range (arrimage1.__len__()):
     for j in range (arrimage1[i].__len__()):
-        newim[i,j] = int(math.sqrt(arrimage1[i,j]*arrimage1[i,j]+arrimage2[i,j]*arrimage2[i,j]))
+        tmp1 = np.int32(arrimage1[i,j])*np.int32(arrimage1[i,j])
+        tmp2 = np.int32(arrimage2[i, j]) * np.int32(arrimage2[i, j])
+        tmp3 = tmp1+tmp2
+        tmp4 = math.sqrt(tmp3)
+        #tmpval = int(math.sqrt(arrimage1[i,j]*arrimage1[i,j]+arrimage2[i,j]*arrimage2[i,j]))
+        newim[i, j] = np.uint8(tmp4)
         finalimage[i,j,0]=newim[i,j]
         finalimage[i,j,1]=arrimage1[i,j]
         finalimage[i,j,2]=arrimage2[i,j]
-cv.imshow("finalimg",finalimage)
-cv.imshow("newim",newim)
+cv.imshow("finalimg",finalimage.astype(np.uint8))
+cv.imshow("newim",newim.astype(np.uint8))
 
 
 cv.waitKey(0)
